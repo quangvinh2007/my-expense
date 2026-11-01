@@ -1,0 +1,6 @@
+{
+  "name": "My Expense - Quản lý chi tiêu cá nhân và gia đình",
+  "description": "Ứng dụng web tối giản, trực quan giúp ghi chép, quản lý và thống kê các khoản thu nhập, chi tiêu hằng ngày cho bản thân và gia đình.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
