@@ -16,10 +16,17 @@ export default defineConfig({
   },
 
   server: {
+    // Cho phép tên miền của Render truy cập
+    allowedHosts: ["my-expense-4pez.onrender.com", ".onrender.com"],
+
     // HMR is disabled in AI Studio via DISABLE_HMR env var.
     hmr: process.env.DISABLE_HMR !== "true",
 
     // Disable file watching when DISABLE_HMR is true.
     watch: process.env.DISABLE_HMR === "true" ? null : {},
+  },
+
+  preview: {
+    allowedHosts: ["my-expense-4pez.onrender.com", ".onrender.com"],
   },
 });
