@@ -3,6 +3,8 @@ import { ENV } from "./env.ts";
 
 const allowedOrigins = [
   ENV.CLIENT_URL,
+  process.env.RENDER_EXTERNAL_URL?.replace(/\/$/, ""),
+  "https://my-expense-4pez.onrender.com",
   ...(ENV.NODE_ENV === "development"
     ? [
         "http://localhost:3000",
@@ -11,7 +13,7 @@ const allowedOrigins = [
         "http://127.0.0.1:5173",
       ]
     : []),
-];
+].filter(Boolean) as string[];
 
 export const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
@@ -22,6 +24,11 @@ export const corsOptions: cors.CorsOptions = {
 
     // Allow configured frontend origins
     if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    // Allow Render domains (.onrender.com)
+    if (origin.endsWith(".onrender.com")) {
       return callback(null, true);
     }
 

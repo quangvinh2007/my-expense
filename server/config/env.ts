@@ -25,7 +25,11 @@ export const ENV = {
 
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || "7d",
 
-  CLIENT_URL: process.env.CLIENT_URL || "http://localhost:3000",
+  CLIENT_URL: (
+    process.env.CLIENT_URL ||
+    process.env.RENDER_EXTERNAL_URL ||
+    "http://localhost:3000"
+  ).replace(/\/$/, ""),
 
   VITE_API_URL: process.env.VITE_API_URL || "/api",
 };
