@@ -1,7 +1,6 @@
 import express from "express";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { createServer as createViteServer } from "vite";
 
 import { app } from "./server/server.ts";
 import { connectDB } from "./server/config/database.ts";
@@ -19,7 +18,6 @@ async function startServer() {
     console.log("\n========================================");
     console.log("          MY EXPENSE SERVER");
     console.log("========================================");
-
     console.log("[SERVER] Đang kết nối database...");
 
     await connectDB();
@@ -30,14 +28,16 @@ async function startServer() {
 
       app.use(express.static(distPath));
 
-      // Frontend SPA fallback
-      app.get(/.*/, (_req, res) => {
+      // Frontend SPA fallback (chỉ trả về index.html cho các route không phải /api)
+      app.get(/^\/(?!api).*/, (_req, res) => {
         res.sendFile(path.join(distPath, "index.html"));
       });
 
       console.log("[SERVER] Chế độ: Production");
       console.log("[SERVER] Frontend: dist/");
     } else {
+      // Chỉ import Vite khi chạy ở môi trường Development để tiết kiệm RAM trên Production
+      const { createServer: createViteServer } = await import("vite");
       const vite = await createViteServer({
         server: {
           middlewareMode: true,
@@ -57,7 +57,6 @@ async function startServer() {
       console.log("----------------------------------------");
       console.log("[SERVER] Khởi động thành công!");
       console.log(`[APP]     http://localhost:${PORT}`);
-      console.log(`[APP]     http://127.0.0.1:${PORT}`);
       console.log(`[API]     http://localhost:${PORT}/api`);
       console.log(`[HEALTH]  http://localhost:${PORT}/api/health`);
       console.log("----------------------------------------");
